@@ -28,6 +28,7 @@ public class AuthorFixture {
     public void findAuthorsByLastName(String lastName, int expectedCount) {
         String requestUri = "http://localhost:8080/authors";
         Map<String,String> urlParameters = new HashMap<String,String>();
+        //todo add parameter for lastName
         ResponseEntity<Author[]> response = buildRestTemplate().getForEntity(requestUri, Author[].class, urlParameters);
         Author[] authors = response.getBody();
         assertThat(authors.length, is(expectedCount));
@@ -45,6 +46,7 @@ public class AuthorFixture {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(requestFactory);
+        //todo set headers
         return restTemplate;
     }
 }

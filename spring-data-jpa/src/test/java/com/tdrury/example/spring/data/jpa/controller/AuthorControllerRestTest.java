@@ -4,6 +4,7 @@ import com.tdrury.example.spring.data.jpa.model.Author;
 import com.tdrury.example.spring.data.jpa.model.AuthorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ public class AuthorControllerRestTest {
 
     private Author[] authors; // test data
 
+    @Disabled
     @Test
     public void whenFindByIdStandard_thenReturnAuthor() {
         // given
@@ -55,6 +57,7 @@ public class AuthorControllerRestTest {
         assertThat(response.getBody(), is(authors[0]));
     }
 
+    @Disabled
     @Test
     public void whenFindById_thenReturnAuthor() {
         // given
@@ -81,6 +84,7 @@ public class AuthorControllerRestTest {
 //        assertThat(author, is(authors[0]));
     }
 
+    @Disabled
     @Test
     public void whenFindAuthorById_thenReturnAuthor() {
         // given
@@ -90,7 +94,7 @@ public class AuthorControllerRestTest {
         log.debug("whenGetAuthorById_thenReturnAuthor: calling GET {}", url);
         Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
         ParameterizedTypeReference<CollectionModel<Author>> authorsType = new ParameterizedTypeReference<CollectionModel<Author>>() {};
-        CollectionModel<Author> response = traverson.follow("authors", "search", "by-id").toObject(authorsType);
+        CollectionModel<Author> response = traverson.follow("authors", "search").toObject(authorsType);
         log.debug("whenGetAuthorById_thenReturnAuthor: got {}", response);
         Author[] authors = response.getContent().toArray(new Author[1]);
 
