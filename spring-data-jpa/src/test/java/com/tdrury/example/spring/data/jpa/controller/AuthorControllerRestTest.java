@@ -2,6 +2,7 @@ package com.tdrury.example.spring.data.jpa.controller;
 
 import com.tdrury.example.spring.data.jpa.model.Author;
 import com.tdrury.example.spring.data.jpa.model.AuthorRepository;
+import com.tdrury.example.spring.data.jpa.model.Matchers;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,14 +17,17 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static com.tdrury.example.spring.data.jpa.model.Matchers.*;
 
 @Slf4j
+@ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthorControllerRestTest {
 
@@ -40,31 +44,26 @@ public class AuthorControllerRestTest {
     @Test
     public void whenFindByIdStandard_thenReturnAuthor() {
         // given
+        String url = getBaseUrl()+"/authors/1";
+        log.debug("whenFindById_thenReturnAuthor: call GET {}", url);
 
         // when
-        String url = "http://localhost:"+port+"/api/authors/1";
-        log.debug("whenFindById_thenReturnAuthor: call GET {}", url);
         ResponseEntity<Author> response  = restTemplate.getForEntity(url, Author.class);
         log.debug("whenFindById_thenReturnAuthor: response status={} body={}", response.getStatusCodeValue(), response.getBody());
 
         // then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(notNullValue()));
-        assertThat(response.getBody().getFirstName(), is("Fred"));
-        assertThat(response.getBody().getLastName(), is("Weasley"));
-//        assertThat(response.getBody(), is(authors[0]));
+        assertThat(response.getBody(), hasSameName(authors[0]));
     }
 
     @Test
     public void whenFindById_thenReturnAuthor() {
         // given
-        for (Author a : authorRepository.findAll()) {
-            log.debug("whenFindById_thenReturnAuthor: author={}", a);
-        }
-
-        // when
         String url = getBaseUrl()+"/authors/1";
         log.debug("whenFindById_thenReturnAuthor: call GET {}", url);
+
+        // when
         ResponseEntity<Author> response  = restTemplate.getForEntity(url, Author.class);
 //        Traverson traverson = new Traverson(URI.create(BASE_PATH), MediaTypes.HAL_JSON);
 //        ParameterizedTypeReference<EntityModel<Author>> authorType = new ParameterizedTypeReference<EntityModel<Author>>() {};
@@ -75,10 +74,7 @@ public class AuthorControllerRestTest {
         // then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(notNullValue()));
-        assertThat(response.getBody().getFirstName(), is("Fred"));
-        assertThat(response.getBody().getLastName(), is("Weasley"));
-        assertThat(response.getBody(), is(authors[0]));
-//        assertThat(author, is(authors[0]));
+        assertThat(response.getBody(), hasSameName(authors[0]));
     }
 
 //    @Test
@@ -103,10 +99,10 @@ public class AuthorControllerRestTest {
     @Test
     public void whenGetAllAuthors_thenReturnAllAuthors() {
         // given
-
-        // when
         String url = getBaseUrl();
         log.debug("whenGetAllAuthors_thenReturnAllAuthors: calling GET {}", url);
+
+        // when
         Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
         ParameterizedTypeReference<CollectionModel<Author>> authorsType = new ParameterizedTypeReference<CollectionModel<Author>>() {};
         CollectionModel<Author> response = traverson.follow("authors").toObject(authorsType);
