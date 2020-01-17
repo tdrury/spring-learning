@@ -1,0 +1,11 @@
+
+spring:
+  data:
+    rest:
+      base-path: /api
+
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false

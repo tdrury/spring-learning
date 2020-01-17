@@ -8,12 +8,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>spring-learning</name>
+    <name>spring-learning: parent</name>
     <description>examples of spring modules</description>
 
     <modules>
         <module>testcontainers</module>
-        <module>spring-data-jpa</module>
+        <module>spring-learning-data-jpa</module>
+        <module>spring-learning-properties</module>
     </modules>
 
     <properties>
