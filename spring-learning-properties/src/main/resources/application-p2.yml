@@ -1,0 +1,8 @@
+
+
+tdrury:
+  string1: "p2 string"
+  int1: 1
+
+  p2:
+    s: "defined only in p2"
