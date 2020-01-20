@@ -106,33 +106,12 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <testSourceDirectory>src/it/java</testSourceDirectory>
-                    <additionalClasspathElements>
-                        <additionalClasspathElement>src/it/resources</additionalClasspathElement>
-                    </additionalClasspathElements>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>

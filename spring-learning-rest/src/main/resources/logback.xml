@@ -1,0 +1,33 @@
+<configuration debug="false" scan="false">
+
+    <!-- see https://logback.qos.ch/manual/layouts.html -->
+
+    <!-- log human-readable strings to STDOUT-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%cyan(%date) %highlight(%-5level) [%logger] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-logging.html#boot-features-logback-extensions -->
+    <springProfile name="default">
+        <root level="${LOG_ROOT_LEVEL:-WARN}">
+            <appender-ref ref="${APPENDER:-STDOUT}"/>
+        </root>
+        <logger name="com.tdrury" level="${LOG_APP_LEVEL:-INFO}"/>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="${LOG_ROOT_LEVEL:-INFO}">
+            <appender-ref ref="${APPENDER:-STDOUT}"/>
+        </root>
+        <logger name="org.springframework.web.client.RestTemplate" level="DEBUG"/>
+        <logger name="com.tdrury" level="${LOG_APP_LEVEL:-DEBUG}"/>
+    </springProfile>
+
+    <logger name="ch.qos.logback" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
+
+</configuration>
