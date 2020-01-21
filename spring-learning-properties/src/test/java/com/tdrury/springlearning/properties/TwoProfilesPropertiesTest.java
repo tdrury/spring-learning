@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 @Slf4j
 @ActiveProfiles("p1, p2")
