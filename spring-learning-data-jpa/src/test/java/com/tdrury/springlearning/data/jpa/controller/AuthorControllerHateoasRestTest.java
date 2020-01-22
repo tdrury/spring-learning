@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.test.context.ActiveProfiles;
@@ -38,21 +39,21 @@ public class AuthorControllerHateoasRestTest {
 
     private IsPojo<Author>[] authors; // test data POJO matchers
 
-//    @Test
-//    public void whenFindById_thenReturnAuthor() {
-//        // given
-//        String url = getBaseUrl();
-//        log.debug("whenGetAllAuthors_thenReturnAllAuthors: calling GET {}", url);
-//        Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
-//        ParameterizedTypeReference<EntityModel<Author>> authorType = new ParameterizedTypeReference<EntityModel<Author>>() {};
-//
-//        // when
-//        EntityModel<Author> author = traverson.follow("authors", "1").toObject(authorType);
-//        log.debug("whenFindById_thenReturnAuthor: author={}", author);
-//
-//        // then
-//        assertThat(author.getContent(), is(authors[0]));
-//    }
+    @Test
+    public void whenFindById_thenReturnAuthor() {
+        // given
+        String url = getBaseUrl();
+        log.debug("whenGetAllAuthors_thenReturnAllAuthors: calling GET {}", url);
+        Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
+        ParameterizedTypeReference<EntityModel<Author>> authorType = new ParameterizedTypeReference<EntityModel<Author>>() {};
+
+        // when
+        EntityModel<Author> author = traverson.follow("authors/1").toObject(authorType);
+        log.debug("whenFindById_thenReturnAuthor: author={}", author);
+
+        // then
+        assertThat(author.getContent(), is(authors[0]));
+    }
 
     @Test
     public void whenGetAuthorsByLastName_thenReturnAllAuthorsWithSameLastName() {

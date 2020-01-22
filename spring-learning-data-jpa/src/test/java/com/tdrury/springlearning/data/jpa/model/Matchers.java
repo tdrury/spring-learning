@@ -13,4 +13,8 @@ public class Matchers {
                 .withProperty("lastName", is(author.getLastName()));
     }
 
+    public static IsPojo<Book> bookPojo(Book book) {
+        return pojo(Book.class)
+                .withProperty("isbn", is(book.getIsbn()));
+    }
 }
