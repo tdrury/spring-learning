@@ -6,7 +6,6 @@ import com.tdrury.springlearning.data.jpa.model.AuthorRepository;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.tdrury.springlearning.data.jpa.model.Matchers.authorPojo;
@@ -36,7 +36,7 @@ public class AuthorControllerRestTest {
     @Value("${spring.data.rest.base-path}")
     private String BASE_PATH;
 
-    private IsPojo<Author>[] authors; // test data POJO matchers
+    private List<IsPojo<Author>> authors; // test data POJO matchers
 
     @Test
     public void whenFindById_thenReturnAuthor() {
@@ -51,10 +51,9 @@ public class AuthorControllerRestTest {
         // then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(notNullValue()));
-        assertThat(response.getBody(), is(authors[0]));
+        assertThat(response.getBody(), is(authors.get(0)));
     }
 
-    @Disabled
     @Test
     public void whenFindAll_thenReturnAll() {
         // given
@@ -98,10 +97,10 @@ public class AuthorControllerRestTest {
     @BeforeEach
     public void setupData() {
         authorRepository.deleteAll();
-        authors = new IsPojo[3];
-        authors[0] = authorPojo(authorRepository.saveAndFlush(new Author("Fred", "Weasley")));
-        authors[1] = authorPojo(authorRepository.saveAndFlush(new Author("George", "Weasley")));
-        authors[2] = authorPojo(authorRepository.saveAndFlush(new Author("George", "Burdell")));
+        authors = new ArrayList<> (3);
+        authors.set(0, authorPojo(authorRepository.saveAndFlush(new Author("Fred", "Weasley"))));
+        authors.set(1, authorPojo(authorRepository.saveAndFlush(new Author("George", "Weasley"))));
+        authors.set(2, authorPojo(authorRepository.saveAndFlush(new Author("George", "Burdell"))));
     }
 
     @Data

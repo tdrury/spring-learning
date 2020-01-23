@@ -23,11 +23,8 @@ public class HelloServiceTest {
 
     @Test
     public void whenSayWithNull_thenReturnHelloOnly() {
-        // given
-        String name = null;
-
         // when
-        String response = helloService.hello(name);
+        String response = helloService.hello(null);
 
         // then
         assertThat(response, is("Hello"));

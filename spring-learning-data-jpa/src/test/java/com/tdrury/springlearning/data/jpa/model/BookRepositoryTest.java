@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.tdrury.springlearning.data.jpa.model.Matchers.*;
@@ -78,7 +79,7 @@ public class BookRepositoryTest {
         books[1].setAuthors(Arrays.asList(authors[0], authors[1]));
 
         books[2] = new Book("isbn3", "GT a History");
-        books[2].setAuthors(Arrays.asList(authors[2]));
+        books[2].setAuthors(Collections.singletonList(authors[2]));
 
         bookRepository.saveAll(Arrays.asList(books));
     }

@@ -18,7 +18,9 @@ import org.springframework.hateoas.client.Traverson;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.tdrury.springlearning.data.jpa.model.Matchers.authorPojo;
@@ -37,7 +39,7 @@ public class AuthorControllerHateoasRestTest {
     @Value("${spring.data.rest.base-path}")
     private String BASE_PATH;
 
-    private IsPojo<Author>[] authors; // test data POJO matchers
+    private List<IsPojo<Author>> authors; // test data POJO matchers
 
     @Test
     public void whenFindById_thenReturnAuthor() {
@@ -52,7 +54,8 @@ public class AuthorControllerHateoasRestTest {
         log.debug("whenFindById_thenReturnAuthor: author={}", author);
 
         // then
-        assertThat(author.getContent(), is(authors[0]));
+        assertThat(author, is(notNullValue()));
+        assertThat(author.getContent(), is(authors.get(0)));
     }
 
     @Test
@@ -74,7 +77,7 @@ public class AuthorControllerHateoasRestTest {
         // then
         assertThat(response, is(notNullValue()));
         assertThat(response.getContent().size(), is(2));
-        assertThat(response.getContent(), containsInAnyOrder(authors[0], authors[1]));
+        assertThat(response.getContent(), containsInAnyOrder(authors.get(0), authors.get(1)));
     }
 
     @Test
@@ -102,9 +105,9 @@ public class AuthorControllerHateoasRestTest {
     @BeforeEach
     public void setupData() {
         authorRepository.deleteAll();
-        authors = new IsPojo[3];
-        authors[0] = authorPojo(authorRepository.saveAndFlush(new Author("Fred", "Weasley")));
-        authors[1] = authorPojo(authorRepository.saveAndFlush(new Author("George", "Weasley")));
-        authors[2] = authorPojo(authorRepository.saveAndFlush(new Author("George", "Burdell")));
+        authors = new ArrayList<>(3);
+        authors.set(0, authorPojo(authorRepository.saveAndFlush(new Author("Fred", "Weasley"))));
+        authors.set(1, authorPojo(authorRepository.saveAndFlush(new Author("George", "Weasley"))));
+        authors.set(2, authorPojo(authorRepository.saveAndFlush(new Author("George", "Burdell"))));
     }
 }
