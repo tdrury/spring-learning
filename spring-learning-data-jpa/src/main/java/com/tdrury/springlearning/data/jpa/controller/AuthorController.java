@@ -4,9 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/json/1.0/author")
+@RequestMapping("/api/1.0/author")
 public class AuthorController {
 
-// TODO
+// TODO - is this thing even needed?
 
 }

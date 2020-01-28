@@ -10,9 +10,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.tdrury.springlearning.data.jpa.model.Matchers.*;
+import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
+import static com.tdrury.springlearning.data.jpa.model.BookMatcher.bookMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.is;
 
 @ActiveProfiles("dev")
 @DataJpaTest
@@ -34,7 +36,7 @@ public class BookRepositoryTest {
         assertThat(response.size(), is(1));
         assertThat(response.get(0).getIsbn(), is("isbn3"));
         assertThat(response.get(0).getAuthors().size(), is(1));
-        assertThat(response.get(0).getAuthors().get(0), is(authorPojo(authors[2])));
+        assertThat(response.get(0).getAuthors().get(0), is(authorMatcher(authors[2])));
     }
 
     @Test
@@ -46,7 +48,7 @@ public class BookRepositoryTest {
         assertThat(response.size(), is(1));
         assertThat(response.get(0).getIsbn(), is("isbn1"));
         assertThat(response.get(0).getAuthors().size(), is(2));
-        assertThat(response.get(0).getAuthors(), containsInAnyOrder(authorPojo(authors[0]), authorPojo(authors[1])));
+        assertThat(response.get(0).getAuthors(), containsInAnyOrder(authorMatcher(authors[0]), authorMatcher(authors[1])));
     }
 
     @Test
@@ -56,7 +58,7 @@ public class BookRepositoryTest {
 
         // then
         assertThat(response.size(), is(2));
-        assertThat(response, containsInAnyOrder(bookPojo(books[0]), bookPojo(books[1])));
+        assertThat(response, containsInAnyOrder(bookMatcher(books[0]), bookMatcher(books[1])));
     }
 
     Author[] authors;

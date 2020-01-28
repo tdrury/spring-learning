@@ -1,17 +1,16 @@
 package com.tdrury.springlearning.data.jpa.model;
 
-import com.spotify.hamcrest.pojo.IsPojo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.tdrury.springlearning.data.jpa.model.Matchers.authorPojo;
+import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -23,8 +22,6 @@ public class AuthorRepositoryTest {
     @Autowired
     private AuthorRepository authorRepository;
 
-    private List<IsPojo<Author>> authors; // test data POJO matchers
-
     @Test
     public void findById() {
         // when
@@ -32,7 +29,7 @@ public class AuthorRepositoryTest {
         Author a = response.orElse(null);
 
         // then
-        assertThat(a, is(authors.get(0)));
+        assertThat(a, is(authorMatcher(authors[0])));
     }
 
     @Test
@@ -42,7 +39,7 @@ public class AuthorRepositoryTest {
 
         // then
         assertThat(response.size(), is(2));
-        assertThat(response, containsInAnyOrder(authors.get(0), authors.get(1)));
+        assertThat(response, containsInAnyOrder(authorMatcher(authors[0]), authorMatcher(authors[1])));
     }
 
     @Test
@@ -54,12 +51,15 @@ public class AuthorRepositoryTest {
         assertThat(response.size(), is(0));
     }
 
+    private Author[] authors;
+
     @BeforeEach
     public void init() {
         authorRepository.deleteAll();
-        authors = new ArrayList<> (3);
-        authors.set(0, authorPojo(authorRepository.saveAndFlush(new Author("Fred", "Weasley"))));
-        authors.set(1, authorPojo(authorRepository.saveAndFlush(new Author("George", "Weasley"))));
-        authors.set(2, authorPojo(authorRepository.saveAndFlush(new Author("George", "Burdell"))));
+        authors = new Author[3];
+        authors[0] = new Author("Fred", "Weasley");
+        authors[1] = new Author("George", "Weasley");
+        authors[2] = new Author("George", "Burdell");
+        authorRepository.saveAll(Arrays.asList(authors));
     }
 }

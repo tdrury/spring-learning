@@ -1,6 +1,5 @@
 package com.tdrury.springlearning.data.jpa.controller;
 
-import com.spotify.hamcrest.pojo.IsPojo;
 import com.tdrury.springlearning.data.jpa.model.Author;
 import com.tdrury.springlearning.data.jpa.model.AuthorRepository;
 import lombok.Data;
@@ -12,16 +11,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static com.tdrury.springlearning.data.jpa.model.Matchers.authorPojo;
+import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @Slf4j
 @ActiveProfiles("dev")
@@ -36,8 +38,6 @@ public class AuthorControllerRestTest {
     @Value("${spring.data.rest.base-path}")
     private String BASE_PATH;
 
-    private List<IsPojo<Author>> authors; // test data POJO matchers
-
     @Test
     public void whenFindById_thenReturnAuthor() {
         // given
@@ -51,56 +51,65 @@ public class AuthorControllerRestTest {
         // then
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(notNullValue()));
-        assertThat(response.getBody(), is(authors.get(0)));
+        assertThat(response.getBody(), is(authorMatcher(authors[0])));
     }
 
+    // not sure we can use RestTemplate to read collection of HATEOAS-formatted entities.
+    // See AuthorControllerHateoasRestTest for reading Collections of entities.
+
+//    @Test
+//    public void whenFindAll_thenReturnAll() {
+//        // given
+//        String url = getBaseUrl()+"/authors";
+//        log.debug("whenFindAll_thenReturnAll: call GET {}", url);
+//
+//        // when
+//        ResponseEntity<AuthorResponse> response  = restTemplate.getForEntity(url, AuthorResponse.class);
+//        log.debug("whenFindAll_thenReturnAll: response status={} body={}", response.getStatusCodeValue(), response.getBody());
+//        AuthorResponse content = response.getBody();
+//        for (Author a : content.getAuthors()) {
+//            log.debug("whenFindAll_thenReturnAll: got author: {}", a);
+//        }
+//
+//        // then
+//        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+//        assertThat(content, is(notNullValue()));
+//        assertThat(content, containsInAnyOrder((Collection)authorMatchers(authors)));
+//    }
+
     @Test
-    public void whenFindAll_thenReturnAll() {
+    public void testWhenPOSTAuthor_thenAuthorCreated() {
         // given
+        Author a = new Author("William", "Shakespeare");
         String url = getBaseUrl()+"/authors";
         log.debug("whenFindAll_thenReturnAll: call GET {}", url);
 
         // when
-//        ResponseEntity<Author[]> response  = restTemplate.getForEntity(url, Author[].class);
-        ResponseEntity<AuthorResponse> response  = restTemplate.getForEntity(url, AuthorResponse.class);
-//        ResponseEntity<List<Author>> response  = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Author>>() { });
-        log.debug("whenFindAll_thenReturnAll: response status={} body={}", response.getStatusCodeValue(), response.getBody());
+        HttpEntity<Author> request = new HttpEntity<>(a);
+        ResponseEntity<Author> response = restTemplate.exchange(url, HttpMethod.POST, request, Author.class);
 
         // then
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
         assertThat(response.getBody(), is(notNullValue()));
-        assertThat(response.getBody().getAuthors(), containsInAnyOrder(authors));
+        assertThat(response.getBody(), is(authorMatcher(a)));
     }
 
-//    @Test
-//    public void whenFindByLastName_thenReturnAuthor() {
-//        // given
-//
-//        // when
-//        String url = getBaseUrl()+"/search/findByLastName";
-//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-//            .queryParam("lastName", "Weasley");
-//        ResponseEntity<Author[]> response  = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null, Author[].class);
-////        ResponseEntity<List<Author>> response  = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Author>>() { });
-//
-//        // then
-//        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-//        assertThat(response.getBody(), is(notNullValue()));
-//        assertThat(response.getBody().length, is(2));
-//        //assertThat(response.getBody().getFirstName(), is("Fred"));
-//    }
 
     protected String getBaseUrl() {
         return "http://localhost:"+port+BASE_PATH;
     }
 
+    Author[] authors;
+
     @BeforeEach
     public void setupData() {
         authorRepository.deleteAll();
-        authors = new ArrayList<> (3);
-        authors.set(0, authorPojo(authorRepository.saveAndFlush(new Author("Fred", "Weasley"))));
-        authors.set(1, authorPojo(authorRepository.saveAndFlush(new Author("George", "Weasley"))));
-        authors.set(2, authorPojo(authorRepository.saveAndFlush(new Author("George", "Burdell"))));
+        authors = new Author[] {
+            new Author("Fred", "Weasley"),
+            new Author("George", "Weasley"),
+            new Author("George", "Burdell")
+        };
+        authorRepository.saveAll(Arrays.asList(authors));
     }
 
     @Data
