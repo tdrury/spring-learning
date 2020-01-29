@@ -12,8 +12,7 @@ import java.util.Optional;
 
 import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 @ActiveProfiles("dev")
 @DataJpaTest
@@ -23,9 +22,9 @@ public class AuthorRepositoryTest {
     private AuthorRepository authorRepository;
 
     @Test
-    public void findById() {
+    public void whenFindById_thenReturnSingleAuthor() {
         // when
-        Optional<Author> response = authorRepository.findById(1L);
+        Optional<Author> response = authorRepository.findById(authors[0].getId());
         Author a = response.orElse(null);
 
         // then
@@ -33,7 +32,17 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void findByLastName() {
+    public void whenFindById_givenIdDoesNotExist_thenReturnNothing() {
+        // when
+        Optional<Author> response = authorRepository.findById(999L);
+        Author a = response.orElse(null);
+
+        // then
+        assertThat(a, is(nullValue()));
+    }
+
+    @Test
+    public void whenFindByLastName_givenMultipleMatches_thenReturnAllMatches() {
         // when
         List<Author> response = authorRepository.findByLastName("Weasley");
 
@@ -43,7 +52,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void findByLastName_notFound() {
+    public void whenFindByLastName_givenDoesNotExist_thenReturnNothing() {
         // when
         List<Author> response = authorRepository.findByLastName("DoesNotExist");
 
@@ -51,15 +60,29 @@ public class AuthorRepositoryTest {
         assertThat(response.size(), is(0));
     }
 
+    @Test
+    public void whenSaveAuthor_thenAuthorIsInDatabase() {
+        // given
+        Author a = new Author("Brandon", "Sanderson");
+
+        // when
+        Author saved = authorRepository.save(a);
+
+        // then
+        Author retrieved = authorRepository.getOne(saved.getId());
+        assertThat(retrieved, authorMatcher(a));
+    }
+
     private Author[] authors;
 
     @BeforeEach
     public void init() {
         authorRepository.deleteAll();
-        authors = new Author[3];
-        authors[0] = new Author("Fred", "Weasley");
-        authors[1] = new Author("George", "Weasley");
-        authors[2] = new Author("George", "Burdell");
+        authors = new Author[] {
+            new Author("Fred", "Weasley"),
+            new Author("George", "Weasley"),
+            new Author("George", "Burdell")
+        };
         authorRepository.saveAll(Arrays.asList(authors));
     }
 }
