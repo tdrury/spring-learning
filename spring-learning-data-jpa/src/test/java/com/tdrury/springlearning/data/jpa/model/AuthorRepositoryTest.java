@@ -9,10 +9,12 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("dev")
 @DataJpaTest
@@ -39,6 +41,19 @@ public class AuthorRepositoryTest {
 
         // then
         assertThat(a, is(nullValue()));
+    }
+
+    @Test
+    public void whenGetOne_givenIdDoesNotExist_thenThrowException() {
+        // when
+        Author author = authorRepository.getOne(999L);
+        // entity is lazily fetched so you don't get an exception calling getOne() but you get it
+        // when trying to read the entity.
+
+        // then
+        assertThrows(javax.persistence.EntityNotFoundException.class,
+                () -> assertThat(author, is(nullValue()))
+        );
     }
 
     @Test
@@ -71,6 +86,33 @@ public class AuthorRepositoryTest {
         // then
         Author retrieved = authorRepository.getOne(saved.getId());
         assertThat(retrieved, authorMatcher(a));
+    }
+
+    @Test
+    public void whenDeleteAuthor_thenAuthorIsRemovedFromDatabase_usingGetOne() {
+        // given
+        Long id = authors[0].getId();
+
+        // when
+        authorRepository.delete(authors[0]);
+
+        // then
+        assertThrows(org.springframework.orm.jpa.JpaObjectRetrievalFailureException.class,
+                () -> authorRepository.getOne(id)
+        );
+    }
+
+    @Test
+    public void whenDeleteAuthor_thenAuthorIsRemovedFromDatabase_usingFindById() {
+        // given
+        Long id = authors[0].getId();
+
+        // when
+        authorRepository.delete(authors[0]);
+
+        // then
+        Optional<Author> response = authorRepository.findById(id);
+        assertThat(response.isPresent(), is(false));
     }
 
     private Author[] authors;
