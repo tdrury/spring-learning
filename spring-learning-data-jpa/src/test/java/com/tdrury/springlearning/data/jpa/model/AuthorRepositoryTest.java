@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;

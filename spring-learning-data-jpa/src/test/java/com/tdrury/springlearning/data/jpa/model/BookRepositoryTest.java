@@ -61,16 +61,29 @@ public class BookRepositoryTest {
         assertThat(response, containsInAnyOrder(bookMatcher(books[0]), bookMatcher(books[1])));
     }
 
+    @Test
+    public void whenGetAuthor_thenReturnedAuthorHasBooks() {
+        // when
+        Author author = authorRepository.getOne(authors[0].getId());
+        System.out.println("author="+author);
+        List<Book> authorBooks = author.getBooks();
+
+        // then
+        assertThat(authorBooks.size(), is(2));
+        assertThat(authorBooks, containsInAnyOrder(bookMatcher(books[0]), bookMatcher(books[1])));
+    }
+
     Author[] authors;
     Book[] books;
 
     @BeforeEach
     public void init() {
 
-        authors = new Author[3];
-        authors[0] = new Author("Fred", "Weasley");
-        authors[1] = new Author("George", "Weasley");
-        authors[2] = new Author("George", "Burdell");
+        authors = new Author[] {
+            new Author("Fred", "Weasley"),
+            new Author("George", "Weasley"),
+            new Author("George", "Burdell")
+        };
         authorRepository.saveAll(Arrays.asList(authors));
 
         books = new Book[3];
@@ -84,5 +97,9 @@ public class BookRepositoryTest {
         books[2].setAuthors(Collections.singletonList(authors[2]));
 
         bookRepository.saveAll(Arrays.asList(books));
+
+        authorRepository.getOne(authors[0].getId()).setBooks(Arrays.asList(books[0], books[1]));
+        authorRepository.getOne(authors[1].getId()).setBooks(Arrays.asList(books[0], books[1]));
+        authorRepository.getOne(authors[2].getId()).setBooks(Collections.singletonList(books[2]));
     }
 }
