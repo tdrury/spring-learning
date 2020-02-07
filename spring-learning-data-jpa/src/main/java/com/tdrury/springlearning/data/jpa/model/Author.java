@@ -37,11 +37,13 @@ public class Author {
           .append(", firstName=").append(firstName)
           .append(", lastName=").append(lastName)
           .append(", books=[");
-        for (int i = 0; i < books.size(); i++) {
-            sb.append("Book(isbn=").append(books.get(i).getIsbn()).append(", title=").append(books.get(i).getTitle()).append(")");
-            if (i < books.size()-1) {
-                sb.append(", ");
-            }
+        if (books != null) {
+	        for (int i = 0; i < books.size(); i++) {
+		        sb.append("Book(isbn=").append(books.get(i).getIsbn()).append(", title=").append(books.get(i).getTitle()).append(")");
+		        if (i < books.size()-1) {
+			        sb.append(", ");
+		        }
+	        }
         }
         sb.append("])");
         return sb.toString();
