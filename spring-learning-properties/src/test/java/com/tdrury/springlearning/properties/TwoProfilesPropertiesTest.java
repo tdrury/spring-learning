@@ -23,9 +23,13 @@ public class TwoProfilesPropertiesTest {
     @Value("${tdrury.p2.s}")
     private String p2s;
 
+    @Value("${spring.data.rest.base-path}") // from default application properties
+    private String basePath;
+
     @Test
     public void whenBothProfilesActive_thenLaterProfilesOverwriteEarlierProfiles() {
         // expect
+	    assertThat(basePath, is("/api"));
         assertThat(s1, is("p2 string"));
         assertThat(p1s, is("defined only in p1"));
         assertThat(p2s, is("defined only in p2"));
