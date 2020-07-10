@@ -9,3 +9,6 @@ spring:
     properties:
       hibernate:
         show_sql: false
+
+tdrury:
+  source: default
