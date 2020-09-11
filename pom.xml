@@ -13,6 +13,7 @@
 
     <modules>
         <module>testcontainers</module>
+        <module>java-concurrency</module>
         <module>spring-learning-rest</module>
         <module>spring-learning-data-jpa</module>
         <module>spring-learning-properties</module>
