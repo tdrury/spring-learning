@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -28,18 +28,19 @@ import static org.hamcrest.Matchers.notNullValue;
 @Slf4j
 @ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthorControllerRestTest {
+class AuthorControllerRestTest {
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private TestRestTemplate restTemplate;
 
-    @LocalServerPort private int port;
+    @LocalServerPort
+    private int port;
 
     @Value("${spring.data.rest.base-path}")
     private String BASE_PATH;
 
     @Test
-    public void whenFindById_thenReturnAuthor() {
+    void whenFindById_thenReturnAuthor() {
         // given
         String url = getBaseUrl()+"/authors/1";
         log.debug("whenFindById_thenReturnAuthor: call GET {}", url);
@@ -78,7 +79,7 @@ public class AuthorControllerRestTest {
 //    }
 
     @Test
-    public void testWhenPOSTAuthor_thenAuthorCreated() {
+    void testWhenPOSTAuthor_thenAuthorCreated() {
         // given
         Author a = new Author("William", "Shakespeare");
         String url = getBaseUrl()+"/authors";

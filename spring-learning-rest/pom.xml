@@ -9,7 +9,6 @@
         <groupId>com.tdrury</groupId>
         <artifactId>spring-learning</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
 
     <name>spring-learning: rest controllers</name>

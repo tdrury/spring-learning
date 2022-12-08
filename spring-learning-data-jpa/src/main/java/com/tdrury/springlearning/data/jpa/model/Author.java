@@ -1,8 +1,8 @@
 package com.tdrury.springlearning.data.jpa.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
 @EqualsAndHashCode
@@ -38,12 +38,12 @@ public class Author {
           .append(", lastName=").append(lastName)
           .append(", books=[");
         if (books != null) {
-	        for (int i = 0; i < books.size(); i++) {
-		        sb.append("Book(isbn=").append(books.get(i).getIsbn()).append(", title=").append(books.get(i).getTitle()).append(")");
-		        if (i < books.size()-1) {
-			        sb.append(", ");
-		        }
-	        }
+            for (int i = 0; i < books.size(); i++) {
+                sb.append("Book(isbn=").append(books.get(i).getIsbn()).append(", title=").append(books.get(i).getTitle()).append(")");
+                if (i < books.size()-1) {
+                    sb.append(", ");
+                }
+            }
         }
         sb.append("])");
         return sb.toString();

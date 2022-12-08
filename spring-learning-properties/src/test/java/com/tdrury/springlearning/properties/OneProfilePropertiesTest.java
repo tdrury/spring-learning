@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 @ActiveProfiles("p1")
 @SpringBootTest
-public class OneProfilePropertiesTest {
+class OneProfilePropertiesTest {
 
     @Autowired
     private Environment env;
@@ -26,14 +26,14 @@ public class OneProfilePropertiesTest {
     private String p1s;
 
     @Test
-    public void whenProfile1Active_thenOnlySeeValuesFromProfile1() {
+    void whenProfile1Active_thenOnlySeeValuesFromProfile1() {
         // expect
         assertThat(s1, is("p1 string"));
         assertThat(p1s, is("defined only in p1"));
     }
 
     @Test
-    public void whenProfileNotActive_thenPropertiesAreUndefined() {
+    void whenProfileNotActive_thenPropertiesAreUndefined() {
         // expect
         assertThat(env.getProperty("tdrury.p2.s"), is(nullValue()));
     }

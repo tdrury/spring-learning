@@ -10,9 +10,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
-@ActiveProfiles("p1, p2")
+@ActiveProfiles({"p1", "p2"})
 @SpringBootTest
-public class TwoProfilesPropertiesTest {
+class TwoProfilesPropertiesTest {
 
     @Value("${tdrury.string1}")
     private String s1;
@@ -27,9 +27,9 @@ public class TwoProfilesPropertiesTest {
     private String basePath;
 
     @Test
-    public void whenBothProfilesActive_thenLaterProfilesOverwriteEarlierProfiles() {
+    void whenBothProfilesActive_thenLaterProfilesOverwriteEarlierProfiles() {
         // expect
-	    assertThat(basePath, is("/api"));
+        assertThat(basePath, is("/api"));
         assertThat(s1, is("p2 string"));
         assertThat(p1s, is("defined only in p1"));
         assertThat(p2s, is("defined only in p2"));

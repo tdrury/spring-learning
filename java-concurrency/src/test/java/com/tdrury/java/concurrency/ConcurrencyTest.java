@@ -15,10 +15,10 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @Slf4j
-public class ConcurrencyTest {
+class ConcurrencyTest {
 
     @Test
-    public void whenExecutorServiceInvokeAll_givenSomeTasks_thenAllTasksRun() throws InterruptedException {
+    void whenExecutorServiceInvokeAll_givenSomeTasks_thenAllTasksRun() throws InterruptedException {
         // given - 10 tasks with 5 threads in pool
         Map<String,Foo> results = new ConcurrentHashMap<>();
         IntStream indices = IntStream.range(0, 10);
@@ -43,7 +43,7 @@ public class ConcurrencyTest {
     }
 
     @Test
-    public void whenExecutorServiceSubmitThenGet_givenSomeTasks_thenTasksRunSequentially() {
+    void whenExecutorServiceSubmitThenGet_givenSomeTasks_thenTasksRunSequentially() {
         // given - 8 tasks with 3 threads in pool
         IntStream count = IntStream.range(0, 8);
         List<String> tasks = count.mapToObj(i -> "task"+i).collect(Collectors.toList());
@@ -78,7 +78,7 @@ public class ConcurrencyTest {
     }
 
     @Test
-    public void whenExecutorServiceSubmitAll_givenSomeTasks_thenTasksRunInParallel() {
+    void whenExecutorServiceSubmitAll_givenSomeTasks_thenTasksRunInParallel() {
         // given - 8 tasks with 3 threads in pool
         IntStream count = IntStream.range(0, 8);
         List<String> tenants = count.mapToObj(i -> "task"+i).collect(Collectors.toList());
@@ -117,7 +117,7 @@ public class ConcurrencyTest {
     }
 
     @Test
-    public void whenForkJoinPoolSubmit_givenParallelStream_thenAllThreadsRun() {
+    void whenForkJoinPoolSubmit_givenParallelStream_thenAllThreadsRun() {
         // given - 10 tasks with 5 threads in pool
         IntStream indices = IntStream.range(0, 10);
         ForkJoinPool pool = new ForkJoinPool(5);

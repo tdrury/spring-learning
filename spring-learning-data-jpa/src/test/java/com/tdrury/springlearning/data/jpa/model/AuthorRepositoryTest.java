@@ -1,5 +1,6 @@
 package com.tdrury.springlearning.data.jpa.model;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("dev")
 @DataJpaTest
-public class AuthorRepositoryTest {
+class AuthorRepositoryTest {
 
     @Autowired
     private AuthorRepository authorRepository;
 
     @Test
-    public void whenFindById_thenReturnSingleAuthor() {
+    void whenFindById_thenReturnSingleAuthor() {
         // when
         Optional<Author> response = authorRepository.findById(authors[0].getId());
         Author a = response.orElse(null);
@@ -33,7 +34,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void whenFindById_givenIdDoesNotExist_thenReturnNothing() {
+    void whenFindById_givenIdDoesNotExist_thenReturnNothing() {
         // when
         Optional<Author> response = authorRepository.findById(999L);
         Author a = response.orElse(null);
@@ -43,20 +44,20 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void whenGetOne_givenIdDoesNotExist_thenThrowException() {
+    void whenGetOne_givenIdDoesNotExist_thenThrowException() {
         // when
         Author author = authorRepository.getOne(999L);
         // entity is lazily fetched so you don't get an exception calling getOne() but you get it
         // when trying to read the entity.
 
         // then
-        assertThrows(javax.persistence.EntityNotFoundException.class,
+        assertThrows(EntityNotFoundException.class,
                 () -> assertThat(author, is(nullValue()))
         );
     }
 
     @Test
-    public void whenFindByLastName_givenMultipleMatches_thenReturnAllMatches() {
+    void whenFindByLastName_givenMultipleMatches_thenReturnAllMatches() {
         // when
         List<Author> response = authorRepository.findByLastName("Weasley");
 
@@ -66,7 +67,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void whenFindByLastName_givenDoesNotExist_thenReturnNothing() {
+    void whenFindByLastName_givenDoesNotExist_thenReturnNothing() {
         // when
         List<Author> response = authorRepository.findByLastName("DoesNotExist");
 
@@ -75,7 +76,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void whenSaveAuthor_thenAuthorIsInDatabase() {
+    void whenSaveAuthor_thenAuthorIsInDatabase() {
         // given
         Author a = new Author("Brandon", "Sanderson");
 
@@ -88,7 +89,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void whenDeleteAuthor_thenAuthorIsRemovedFromDatabase_usingGetOne() {
+    void whenDeleteAuthor_thenAuthorIsRemovedFromDatabase_usingGetOne() {
         // given
         Long id = authors[0].getId();
 
@@ -102,7 +103,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void whenDeleteAuthor_thenAuthorIsRemovedFromDatabase_usingFindById() {
+    void whenDeleteAuthor_thenAuthorIsRemovedFromDatabase_usingFindById() {
         // given
         Long id = authors[0].getId();
 

@@ -1,10 +1,10 @@
 package com.tdrury.springlearning.data.jpa.model;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PROTECTED, force=true)

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.MediaTypes;
@@ -29,11 +29,12 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 @ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthorControllerHateoasRestTest {
+class AuthorControllerHateoasRestTest {
 
     @Autowired private AuthorRepository authorRepository;
 
-    @LocalServerPort private int port;
+    @LocalServerPort
+    private int port;
 
     @Value("${spring.data.rest.base-path}")
     private String BASE_PATH;
@@ -56,7 +57,7 @@ public class AuthorControllerHateoasRestTest {
 //    }
 
     @Test
-    public void whenGetAuthorsByLastName_thenReturnAllAuthorsWithSameLastName() {
+    void whenGetAuthorsByLastName_thenReturnAllAuthorsWithSameLastName() {
         // given
         String url = getBaseUrl();
         Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
@@ -78,7 +79,7 @@ public class AuthorControllerHateoasRestTest {
     }
 
     @Test
-    public void whenGetAllAuthors_thenReturnAllAuthors() {
+    void whenGetAllAuthors_thenReturnAllAuthors() {
         // given
         String url = getBaseUrl();
         log.debug("whenGetAllAuthors_thenReturnAllAuthors: calling GET {}", url);

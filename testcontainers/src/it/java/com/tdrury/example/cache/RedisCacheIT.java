@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 @Slf4j
 @Testcontainers
-public class RedisCacheIT {
+class RedisCacheIT {
 
     private RedisCache underTest;
 
@@ -37,7 +37,7 @@ public class RedisCacheIT {
     }
 
     @Test
-    public void whenPutString_thenGetStringBack() {
+    void whenPutString_thenGetStringBack() {
         // given
         underTest.put("test", "example");
 
@@ -51,7 +51,7 @@ public class RedisCacheIT {
     }
 
     @Test
-    public void whenPutNothing_thenGetNothingBack() {
+    void whenPutNothing_thenGetNothingBack() {
         // given
 
         // when
