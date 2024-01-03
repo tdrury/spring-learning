@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @Slf4j
 @ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HelloControllerRestTemplateIT {
+class HelloControllerRestTemplateIT {
 
     @Autowired private TestRestTemplate restTemplate;
 
@@ -29,7 +29,7 @@ public class HelloControllerRestTemplateIT {
     private String BASE_PATH;
 
     @Test
-    public void whenHelloWithNoName_thenReturnHelloOnly() {
+    void whenHelloWithNoName_thenReturnHelloOnly() {
         // given
         String url = getBaseUrl()+"/hello";
         log.debug("whenHelloWithNoName_thenReturnHelloOnly: call GET {}", url);

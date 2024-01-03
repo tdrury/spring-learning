@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 
 @ActiveProfiles("dev")
 @DataJpaTest
-public class BookRepositoryTest {
+class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
@@ -28,7 +28,7 @@ public class BookRepositoryTest {
 
 
     @Test
-    public void whenGetBookWithSingleAuthor_thenReturnCorrectBook() {
+    void whenGetBookWithSingleAuthor_thenReturnCorrectBook() {
         // when
         List<Book> response = bookRepository.findByTitle("GT a History");
 
@@ -40,7 +40,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void whenGetBookWithMultipleAuthors_thenReturnCorrectBook() {
+    void whenGetBookWithMultipleAuthors_thenReturnCorrectBook() {
         // when
         List<Book> response = bookRepository.findByTitle("Jokes");
 
@@ -52,7 +52,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void whenGetBookByAuthor_thenReturnCorrectBooks() {
+    void whenGetBookByAuthor_thenReturnCorrectBooks() {
         // when
         List<Book> response = bookRepository.findByAuthorsContaining(authors[0]);
 
@@ -62,7 +62,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void whenGetAuthor_thenReturnedAuthorHasBooks() {
+    void whenGetAuthor_thenReturnedAuthorHasBooks() {
         // when
         Author author = authorRepository.getOne(authors[0].getId());
         System.out.println("author="+author);

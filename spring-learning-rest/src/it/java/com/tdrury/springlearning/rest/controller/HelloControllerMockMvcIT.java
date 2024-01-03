@@ -15,13 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("dev")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class HelloControllerMockMvcIT {
+class HelloControllerMockMvcIT {
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    public void whenHelloWithNoName_thenReturnHelloOnly() throws Exception {
+    void whenHelloWithNoName_thenReturnHelloOnly() throws Exception {
         // given
         mockMvc.perform(get("/api/hello"))
                 .andExpect(status().isOk())
