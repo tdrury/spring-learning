@@ -1,0 +1,49 @@
+
+### GET authors
+GET http://localhost:8080/api/authors
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response content-type is hal+json", function() {
+        let type = response.contentType.mimeType;
+        client.assert(type === "application/hal+json", "Expected 'application/hal+json' but received '" + type + "'");
+    });
+%}
+
+### CREATE author
+POST http://localhost:8080/api/authors
+Content-Type: application/json
+
+{
+  "firstName": "Fred",
+  "lastName": "Weasley"
+}u
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+    client.test("Response content-type is hal+json", function() {
+        let type = response.contentType.mimeType;
+        client.assert(type === "application/hal+json", "Expected 'application/hal+json' but received '" + type + "'");
+    });
+    client.test("Request executed successfully", function() {
+        client.assert(response.body.firstName === "Fred", "first name is wrong");
+        client.assert(response.body.lastName === "Weasley", "last name is wrong");
+    });
+%}
+
+### GET author 1
+GET http://localhost:8080/api/authors/1
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response content-type is hal+json", function() {
+        let type = response.contentType.mimeType;
+        client.assert(type === "application/hal+json", "Expected 'application/hal+json' but received '" + type + "'");
+    });
+%}

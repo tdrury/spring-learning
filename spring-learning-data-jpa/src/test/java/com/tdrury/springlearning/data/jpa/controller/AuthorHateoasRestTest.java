@@ -16,10 +16,7 @@ import org.springframework.hateoas.client.Traverson;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatcher;
 import static com.tdrury.springlearning.data.jpa.model.AuthorMatcher.authorMatchers;
@@ -29,7 +26,7 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 @ActiveProfiles("dev")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthorControllerHateoasRestTest {
+class AuthorHateoasRestTest {
 
     @Autowired private AuthorRepository authorRepository;
 
@@ -39,29 +36,31 @@ class AuthorControllerHateoasRestTest {
     @Value("${spring.data.rest.base-path}")
     private String BASE_PATH;
 
-//    @Test
-//    public void whenFindById_thenReturnAuthor() {
-//        // given
-//        String url = getBaseUrl();
-//        log.debug("whenGetAllAuthors_thenReturnAllAuthors: calling GET {}", url);
-//        Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
-//        ParameterizedTypeReference<EntityModel<Author>> authorType = new ParameterizedTypeReference<EntityModel<Author>>() {};
-//
-//        // when
-//        EntityModel<Author> author = traverson.follow("authors/1").toObject(authorType);
-//        log.debug("whenFindById_thenReturnAuthor: author={}", author);
-//
-//        // then
-//        assertThat(author, is(notNullValue()));
-//        assertThat(author.getContent(), is(authorPojo(authors[0])));
-//    }
+    @Test
+    // This does not work since the Author entity does not contain the additional hateoas links
+    public void findById_whenAuthorExists_thenReturnAuthorWithNullParameters() {
+        // given
+        String url = getBaseUrl();
+        log.debug("findById_whenAuthorExists_thenReturnAuthor: calling GET {}", url);
+        Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
+
+        // when
+        Author author = traverson.follow("authors")
+                .withTemplateParameters(Map.of("id", "1")).toObject(Author.class);
+        log.debug("findById_whenAuthorExists_thenReturnAuthor: author={}", author);
+        // Author entity will be created, but all fields will be null
+
+        // then
+        assertThat(author, is(notNullValue()));
+        assertThat(author.getId(), is(nullValue()));
+    }
 
     @Test
-    void whenGetAuthorsByLastName_thenReturnAllAuthorsWithSameLastName() {
+    void getAuthorsByLastName_whenMultipleAuthorsWithSameLastName_thenReturnAllAuthorsWithSameLastName() {
         // given
         String url = getBaseUrl();
         Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
-        ParameterizedTypeReference<CollectionModel<Author>> authorsType = new ParameterizedTypeReference<CollectionModel<Author>>() {};
+        ParameterizedTypeReference<CollectionModel<Author>> authorsType = new ParameterizedTypeReference<>() {};
         Map<String,Object> params = new HashMap<>();
         params.put("lastName", "Weasley");
 
@@ -70,7 +69,7 @@ class AuthorControllerHateoasRestTest {
                 .follow("authors", "search", "findByLastName")
                 .withTemplateParameters(params)
                 .toObject(authorsType);
-        log.debug("whenGetAuthorsByLastName_thenReturnAllAuthorsWithSameLastName: got {}", response);
+        log.debug("getAuthorsByLastName_whenMultipleAuthorsWithSameLastName_thenReturnAllAuthorsWithSameLastName:\n\tgot {}", response);
 
         // then
         assertThat(response, is(notNullValue()));
@@ -79,16 +78,16 @@ class AuthorControllerHateoasRestTest {
     }
 
     @Test
-    void whenGetAllAuthors_thenReturnAllAuthors() {
+    void getAllAuthors_whenMultipleAuthors_thenReturnAllAuthors() {
         // given
         String url = getBaseUrl();
-        log.debug("whenGetAllAuthors_thenReturnAllAuthors: calling GET {}", url);
+        log.debug("getAllAuthors_whenMultipleAuthors_thenReturnAllAuthors: calling GET {}", url);
         Traverson traverson = new Traverson(URI.create(url), MediaTypes.HAL_JSON);
-        ParameterizedTypeReference<CollectionModel<Author>> authorsType = new ParameterizedTypeReference<CollectionModel<Author>>() {};
+        ParameterizedTypeReference<CollectionModel<Author>> authorsType = new ParameterizedTypeReference<>() {};
 
         // when
         CollectionModel<Author> response = traverson.follow("authors").toObject(authorsType);
-        log.debug("whenGetAllAuthors_thenReturnAllAuthors: got {}", response);
+        log.debug("getAllAuthors_whenMultipleAuthors_thenReturnAllAuthors:\n\tgot {}", response);
 
         // then
         assertThat(response, is(notNullValue()));
@@ -116,5 +115,7 @@ class AuthorControllerHateoasRestTest {
             new Author("George", "Burdell")
         };
         authorRepository.saveAll(Arrays.asList(authors));
+        List<Author> all = authorRepository.findAll();
+        log.info("setupData: all={}", all);
     }
 }

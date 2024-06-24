@@ -21,7 +21,7 @@ class RedisCacheIT {
 
     // container
     @Container
-    public GenericContainer redis = new GenericContainer<>("redis:5.0.3-alpine")
+    public GenericContainer redis = new GenericContainer<>("redis:7.2-alpine")
             .withExposedPorts(6379);
 
 

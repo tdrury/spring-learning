@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM sapmachine:21-jdk-ubuntu
 VOLUME /tmp
 
 # name of the fat springboot jar/war to run (no path allowed!). Developer build will override this value
@@ -8,5 +8,6 @@ ARG JAR_FILE=app.jar
 ADD target/${JAR_FILE} app.jar
 
 ENV JAVA_OPTS=""
+EXPOSE 8080
 
 ENTRYPOINT exec java $JAVA_OPTS -Xmx128m -Xss256k -Djava.security.egd=file:/dev/./urandom -jar app.jar

@@ -22,8 +22,14 @@
             <appender-ref ref="${APPENDER:-STDOUT}"/>
         </root>
         <logger name="org.springframework.web.client.RestTemplate" level="DEBUG"/>
-        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false"/>
-        <logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false"/>
+        <logger name="org.apache.hc.client5.http" level="DEBUG"/>
+        <logger name="org.hibernate" level="INFO"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+<!--        <logger name="org.hibernate.type.descriptor.sql" level="TRACE">-->
+        <logger name="org.hibernate.orm.jdbc.bind" level="TRACE"/>
+        <logger name="org.hibernate.stat" level="DEBUG"/>
+        <logger name="org.hibernate.SQL_SLOW" level="INFO"/>
+        <logger name="org.hibernate.cache" level="DEBUG"/>
         <logger name="com.tdrury" level="${LOG_APP_LEVEL:-DEBUG}"/>
     </springProfile>
 
