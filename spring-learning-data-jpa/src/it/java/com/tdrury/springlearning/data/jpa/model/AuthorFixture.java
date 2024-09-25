@@ -42,7 +42,6 @@ public class AuthorFixture {
 
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setConnectTimeout(30);
-        requestFactory.setReadTimeout(30);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(requestFactory);

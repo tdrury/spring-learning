@@ -1,0 +1,6 @@
+
+com.tdrury.springlearning:
+  hexagonal:
+    adapters:
+      authorclient:
+        mock: true

@@ -9,27 +9,17 @@
         </encoder>
     </appender>
 
-    <!-- see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-logging.html#boot-features-logback-extensions -->
-    <springProfile name="default">
-        <root level="${LOG_ROOT_LEVEL:-WARN}">
-            <appender-ref ref="${APPENDER:-STDOUT}"/>
-        </root>
-        <logger name="com.tdrury" level="${LOG_APP_LEVEL:-INFO}"/>
-    </springProfile>
-
-    <springProfile name="dev">
-        <root level="${LOG_ROOT_LEVEL:-INFO}">
-            <appender-ref ref="${APPENDER:-STDOUT}"/>
-        </root>
-        <logger name="org.springframework.web.client.RestTemplate" level="DEBUG"/>
-        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false"/>
-        <logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false"/>
-        <logger name="com.tdrury" level="${LOG_APP_LEVEL:-DEBUG}"/>
-    </springProfile>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
 
     <logger name="ch.qos.logback" level="ERROR"/>
     <logger name="org.springframework" level="ERROR"/>
     <logger name="org.apache" level="ERROR"/>
     <logger name="org.hibernate" level="ERROR"/>
+
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.springframework.security.web.authentication" level="INFO"/>
+    <logger name="com.tdrury" level="DEBUG"/>
 
 </configuration>
