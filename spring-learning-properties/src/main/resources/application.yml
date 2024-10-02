@@ -12,3 +12,8 @@ spring:
 
 tdrury:
   source: default
+  things:
+    - name: thing1
+      value: 10
+    - name: thing2
+      value: 20
