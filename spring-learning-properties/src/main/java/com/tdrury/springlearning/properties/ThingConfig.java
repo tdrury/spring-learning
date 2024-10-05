@@ -16,6 +16,7 @@ public class ThingConfig {
     @Data
     public static class Thing {
         String name;
-        String value;
+        int value;
+        double dvalue;
     }
 }

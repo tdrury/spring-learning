@@ -15,5 +15,7 @@ tdrury:
   things:
     - name: thing1
       value: 10
+      dvalue: 3.14
     - name: thing2
       value: 20
+      dvalue: 0.001
