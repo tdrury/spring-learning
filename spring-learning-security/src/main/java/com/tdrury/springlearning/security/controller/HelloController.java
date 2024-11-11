@@ -1,20 +1,20 @@
 package com.tdrury.springlearning.security.controller;
 
-import com.tdrury.springlearning.security.service.HelloService;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
+@Slf4j
 @RestController
-@RequestMapping("${spring.data.rest.base-path}")
 public class HelloController {
 
-    private final HelloService helloService;
+    @GetMapping("/public")
+    public String index() {
+        return "public page";
+    }
 
-    @GetMapping("hello")
-    public String hello() {
-        return helloService.hello();
+    @GetMapping("/private")
+    public String privatePage() {
+        return "private page";
     }
 }
