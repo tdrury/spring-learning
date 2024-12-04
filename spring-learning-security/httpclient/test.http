@@ -1,0 +1,4 @@
+### GET public index
+GET https://localhost:8443/public
+
+###
