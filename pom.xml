@@ -14,6 +14,7 @@
     <modules>
         <module>testcontainers</module>
         <module>java-concurrency</module>
+        <module>spring-learning-security-oauth2</module>
         <module>spring-learning-security</module>
         <module>spring-learning-rest</module>
         <module>spring-learning-data-jpa</module>
