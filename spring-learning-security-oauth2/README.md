@@ -2,7 +2,9 @@
 ### URLs
 
 `GET /` - returns "public page"
+
 `GET /private` - returns "private page"
+
 `GET /user` - shows user info from google oauth2
 
 ### Prerequisites
