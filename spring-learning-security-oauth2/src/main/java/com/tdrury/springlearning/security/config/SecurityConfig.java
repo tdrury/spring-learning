@@ -16,17 +16,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(request -> {
-                request.requestMatchers("/", "/login").permitAll();
+                request.requestMatchers("/public", "/login").permitAll();
                 request.anyRequest().authenticated();
             })
             .csrf(AbstractHttpConfigurer::disable)
-            .oauth2Login(oauth2login -> {
-                oauth2login
-                    .loginPage("/login")
-                    .userInfoEndpoint(config -> config.userService(oauthUserService))
-                    .successHandler((request, response, authentication)
-                                        -> response.sendRedirect("/profile"));
-            });
+            .oauth2Login();
+//            .oauth2Login(oauth2login -> {
+//                oauth2login
+//                    .loginPage("/login")
+//                    .userInfoEndpoint(config -> config.userService(oauthUserService))
+//                    .successHandler((request, response, authentication)
+//                                        -> response.sendRedirect("/profile"));
+//            });
         return http.build();
     }
 }
