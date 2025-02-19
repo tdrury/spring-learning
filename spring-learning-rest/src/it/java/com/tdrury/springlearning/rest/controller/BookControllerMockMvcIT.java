@@ -26,7 +26,7 @@ class BookControllerMockMvcIT {
         mockMvc.perform(post("/api/books")
                 .content(someBinary)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnsupportedMediaType());
     }
 
 }

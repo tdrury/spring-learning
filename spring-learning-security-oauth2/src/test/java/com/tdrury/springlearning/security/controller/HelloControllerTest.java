@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @ExtendWith(SpringExtension.class)
 class HelloControllerTest {
 
@@ -34,7 +34,7 @@ class HelloControllerTest {
 
     @Test
     void index() throws Exception {
-        mockMvc.perform(get("/public"))
+        mockMvc.perform(get("/"))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().string("public page"));
@@ -48,7 +48,6 @@ class HelloControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().string("private page"));
     }
-
 
     @Test
     @WithAnonymousUser
@@ -68,9 +67,10 @@ class HelloControllerTest {
     }
 
     @Test
-    void noPage_thenForbidden() throws Exception {
+    void noPage_thenRedirectToLogin() throws Exception {
         mockMvc.perform(get("/doesnotexist"))
             .andDo(print())
-            .andExpect(status().isNotFound());
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
     }
 }
