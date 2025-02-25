@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-learning-testcontainers</artifactId>
+    <artifactId>redis-learning</artifactId>
 
-    <name>spring-learning: testcontainers</name>
-    <description>learn how to use testcontainers project</description>
+    <name>redis-learning</name>
+    <description>learn how to use redis via testcontainers</description>
 
     <parent>
         <groupId>com.tdrury</groupId>
