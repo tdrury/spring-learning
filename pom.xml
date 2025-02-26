@@ -12,6 +12,7 @@
     <description>examples of spring modules</description>
 
     <modules>
+        <module>mongo-learning</module>
         <module>redis-learning</module>
         <module>java-concurrency</module>
         <module>spring-learning-security-oauth2</module>
